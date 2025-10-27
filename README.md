@@ -1,5 +1,19 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Honeycomb UI Landing Page
+
+A standalone, animated landing page for user registration is available at `public/honeycomb-ui.html`. This single-file HTML page features:
+
+- Modern honeycomb-themed design with hexagonal patterns
+- Smooth CSS animations and parallax effects
+- User registration form with validation
+- Zero external dependencies
+- Fully responsive design
+
+To view the Honeycomb UI:
+1. Open `public/honeycomb-ui.html` directly in your browser, or
+2. Serve it through any web server (e.g., `python3 -m http.server 8080` in the `public` directory)
+
 ## Available Scripts
 
 In the project directory, you can run:

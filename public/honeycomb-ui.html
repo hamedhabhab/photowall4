@@ -40,6 +40,8 @@
             height: 57.735px;
             background: rgba(255, 255, 255, 0.3);
             animation: float 6s ease-in-out infinite;
+            --parallax-x: 0px;
+            --parallax-y: 0px;
         }
 
         .hexagon:before,
@@ -63,10 +65,10 @@
 
         @keyframes float {
             0%, 100% {
-                transform: translateY(0px) rotate(0deg);
+                transform: translate(var(--parallax-x, 0px), var(--parallax-y, 0px)) translateY(0px) rotate(0deg);
             }
             50% {
-                transform: translateY(-20px) rotate(5deg);
+                transform: translate(var(--parallax-x, 0px), var(--parallax-y, 0px)) translateY(-20px) rotate(5deg);
             }
         }
 
@@ -504,18 +506,27 @@
             generateParticles();
         });
 
-        // Add subtle parallax effect on mouse move
+        // Add subtle parallax effect on mouse move with throttling
+        let ticking = false;
         document.addEventListener('mousemove', function(e) {
-            const hexagons = document.querySelectorAll('.hexagon');
-            const mouseX = e.clientX / window.innerWidth;
-            const mouseY = e.clientY / window.innerHeight;
-            
-            hexagons.forEach((hex, index) => {
-                const speed = (index % 3 + 1) * 0.5;
-                const x = (mouseX - 0.5) * speed * 20;
-                const y = (mouseY - 0.5) * speed * 20;
-                hex.style.transform = `translate(${x}px, ${y}px)`;
-            });
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    const hexagons = document.querySelectorAll('.hexagon');
+                    const mouseX = e.clientX / window.innerWidth;
+                    const mouseY = e.clientY / window.innerHeight;
+                    
+                    hexagons.forEach((hex, index) => {
+                        const speed = (index % 3 + 1) * 0.5;
+                        const x = (mouseX - 0.5) * speed * 20;
+                        const y = (mouseY - 0.5) * speed * 20;
+                        // Preserve the floating animation by only setting CSS custom properties
+                        hex.style.setProperty('--parallax-x', `${x}px`);
+                        hex.style.setProperty('--parallax-y', `${y}px`);
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
         });
     </script>
 </body>
